@@ -1,1139 +1,270 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barcellona – Itinerario del gruppo</title>
+  <style>
+    :root { --bg:#f5f5f5; --card:#fff; --text:#111; --muted:#555; --brand:#111; --link:#0b5ed7; --border:#eee; }
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; background: var(--bg); color: var(--text); }
+    header { background: var(--brand); color: #fff; padding: 16px; }
+    header h1 { margin: 0; font-size: 1.35rem; }
+    header p { margin: 6px 0 0; font-size: 0.95rem; opacity: 0.9; }
+    main { max-width: 980px; margin: 0 auto; padding: 16px; }
+    .day { background: var(--card); border-radius: 14px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+    .day h2 { margin: 0 0 10px; font-size: 1.15rem; }
+    .block { border-top: 1px solid var(--border); padding: 12px 0; }
+    .block:first-of-type { border-top: none; }
+    .time { font-weight: 700; }
+    .area { color: var(--muted); font-size: 0.92rem; margin-top: 2px; }
+    .desc { margin-top: 6px; line-height: 1.35; }
+    .links a { display: inline-block; margin-right: 10px; margin-top: 8px; font-size: 0.9rem; text-decoration: none; color: var(--link); }
+    .pill { display:inline-block; font-size:0.78rem; padding: 4px 10px; border-radius: 999px; background:#0000000d; margin-right:8px; margin-top:8px;}
+    footer { text-align: center; font-size: 0.8rem; color: #666; padding: 22px 16px 34px; }
+    .note { background:#fff; border-radius: 14px; padding: 14px 16px; margin: 0 0 16px; border: 1px solid #00000012; }
+    .note b { display:block; margin-bottom:6px;}
   </style>
 </head>
 <body>
-<p class="p1">import React, { useMemo, useState } from "react";</p>
-<p class="p1">import { motion, AnimatePresence } from "framer-motion";</p>
-<p class="p1">import {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>MapPin,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Clock,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Utensils,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Ticket,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Train,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Footprints,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ShoppingBag,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Trophy,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Music,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Church,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Info,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ExternalLink,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>CheckCircle2,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Circle,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Users,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Search,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Filter,</p>
-<p class="p1">} from "lucide-react";</p>
-<p class="p2"><br></p>
-<p class="p1">// Single-file React site for your group itinerary.</p>
-<p class="p1">// ✅ Works as a standalone page in ChatGPT Canvas preview.</p>
-<p class="p1">// ✅ No backend required.</p>
-<p class="p1">// ✅ Participants can tick off items; progress persists in localStorage.</p>
-<p class="p2"><br></p>
-<p class="p1">const STORAGE_KEY = "bcn_itinerary_v1";</p>
-<p class="p2"><br></p>
-<p class="p1">function cx(...classes) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return classes.filter(Boolean).join(" ");</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">const formatDate = (iso) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>// ISO: 2026-05-07</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const d = new Date(iso + "T00:00:00");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return d.toLocaleDateString("it-IT", {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>weekday: "long",</p>
-<p class="p1"><span class="Apple-converted-space">    </span>day: "2-digit",</p>
-<p class="p1"><span class="Apple-converted-space">    </span>month: "long",</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">const link = (label, url) =&gt; ({ label, url });</p>
-<p class="p2"><br></p>
-<p class="p1">const DATA = {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>title: "Barcellona – Itinerario del gruppo",</p>
-<p class="p1"><span class="Apple-converted-space">  </span>subtitle:</p>
-<p class="p1"><span class="Apple-converted-space">    </span>"Giovedì 7 maggio → Domenica 10 maggio | Base: Eixample | Pranzo: bar/tapas | Cena: più strutturata",</p>
-<p class="p1"><span class="Apple-converted-space">  </span>notes: [</p>
-<p class="p1"><span class="Apple-converted-space">    </span>"Suggerimento: apri questo sito dal telefono e aggiungilo alla schermata Home.",</p>
-<p class="p1"><span class="Apple-converted-space">    </span>"Le spunte si salvano sul tuo dispositivo (localStorage).",</p>
-<p class="p1"><span class="Apple-converted-space">    </span>"Orari indicativi: adattali al ritmo del gruppo.",</p>
-<p class="p1"><span class="Apple-converted-space">  </span>],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>days: [</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>id: "2026-05-07",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>title: "Arrivo 9:30 – Centro storico + Born + Cena 7 Portes",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>badge: "Classici + mercati",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>focus: ["Gotico", "Rambla/Boquería", "Born", "Cena storica"],</p>
-<p class="p1"><span class="Apple-converted-space">      </span>blocks: [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "10:30–11:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Plaça de Catalunya",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Shopping 1h: El Corte Inglés",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "shopping",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi / metro",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Sosta comoda post-viaggio: bagni, caffè, acquisti rapidi (gourmet/souvenir).",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Indicazioni", "https://www.google.com/maps/search/?api=1&amp;query=El%20Corte%20Ingl%C3%A9s%20Pla%C3%A7a%20de%20Catalunya"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "11:30–12:15",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Rambla",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Passeggiata su La Rambla + ingresso Boquería",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "walk",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"La Rambla come passaggio (meglio al mattino). Occhio alle trappole turistiche: non mangiare qui.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Rambla", "https://www.google.com/maps/search/?api=1&amp;query=La%20Rambla%20Barcelona"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Boquería", "https://www.google.com/maps/search/?api=1&amp;query=Mercat%20de%20la%20Boqueria"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "12:15–14:00",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Barri Gòtic",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Gotico + chiesa Santa Maria del Pi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "church",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Vicoli, piazze e atmosfera medievale. Santa Maria del Pi è gotica, elegante e spesso più tranquilla.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Gotico", "https://www.google.com/maps/search/?api=1&amp;query=Barri%20G%C3%B2tic%20Barcelona"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Santa Maria del Pi", "https://www.google.com/maps/search/?api=1&amp;query=Bas%C3%ADlica%20de%20Santa%20Maria%20del%20Pi"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "14:00–15:15",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "El Born",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Pranzo (bar/tapas) nel Born",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "food",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Opzioni snelle e autentiche. Consiglio: tapas + bicchiere di cava.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("El Xampanyet", "https://www.google.com/maps/search/?api=1&amp;query=El%20Xampanyet%20Barcelona"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Bar del Pla", "https://www.google.com/maps/search/?api=1&amp;query=Bar%20del%20Pla%20Barcelona"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "15:30–17:00",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "El Born",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Museo Picasso",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "museum",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Ottimo per gli anni formativi di Picasso e la sua relazione con la città.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Biglietti", "https://museupicassobcn.cat/en/plan-your-visit/buy-tickets-and-opening-hours"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=Museu%20Picasso%20Barcelona"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "17:00–18:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "El Born",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Passeggiata + chiesa Santa Maria del Mar",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "church",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Capolavoro del gotico catalano: interni puri e atmosfera intensa.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Santa Maria del Mar", "https://www.google.com/maps/search/?api=1&amp;query=Bas%C3%ADlica%20de%20Santa%20Maria%20del%20Mar"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "20:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Born/Port",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Cena: 7 Portes",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "dinner",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "taxi / a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Ristorante storico: scegli un riso di mare o piatti catalani classici.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Prenota", "https://7portes.com/en/book-a-table-restaurant/"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=7%20Portes%20Barcelona"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>],</p>
-<p class="p1"><span class="Apple-converted-space">    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>id: "2026-05-08",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>title: "Gaudí + Gràcia + biforcazione (Shopping vs Calcio)",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>badge: "Modernismo + opzioni",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>focus: ["Passeig de Gràcia", "Sagrada Família", "Park Güell", "Scelta 16:00–18:30"],</p>
-<p class="p1"><span class="Apple-converted-space">      </span>blocks: [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "09:30–10:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Eixample",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Passeig de Gràcia (esterni): Casa Batlló + Casa Milà",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "walk",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Passeggiata modernista: foto e dettagli architettonici (senza entrare).",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Casa Batlló", "https://www.google.com/maps/search/?api=1&amp;query=Casa%20Batll%C3%B3"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Casa Milà", "https://www.google.com/maps/search/?api=1&amp;query=Casa%20Mil%C3%A0%20La%20Pedrera"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "11:00–12:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Eixample",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Sagrada Família",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "ticket",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "metro",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Prenotazione obbligatoria con fascia oraria. Considera 60–90 min.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Biglietti ufficiali", "https://sagradafamilia.org/tickets"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=Sagrada%20Fam%C3%ADlia"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "13:00–14:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Gràcia",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Pranzo bar/tapas + Mercat de la Llibertat",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "food",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "metro / a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Quartiere super locale. Mangiate leggero: tapas + piatto del giorno.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mercat de la Llibertat", "https://www.google.com/maps/search/?api=1&amp;query=Mercat%20de%20la%20Llibertat"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("La Pubilla", "https://www.google.com/maps/search/?api=1&amp;query=La%20Pubilla%20Barcelona"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "15:00–16:15",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Gràcia",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Park Güell",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "ticket",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "bus/metro + breve salita",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Ingresso a orario; panorami e mosaici. Arrivate puntuali.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Biglietti ufficiali", "https://parkguell.barcelona/en/buy-tickets"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=Park%20G%C3%BCell"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "16:00–18:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Opzione",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Biforcazione (2–3 ore): Shopping oppure Calcio",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "split",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "metro / taxi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Il gruppo può dividersi. Entrambe le opzioni durano ~2–2h30 e permettono di ricongiungersi per cena.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>options: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">              </span>name: "Shopping (signore)",</p>
-<p class="p1"><span class="Apple-converted-space">              </span>icon: "shopping",</p>
-<p class="p1"><span class="Apple-converted-space">              </span>plan: [</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>time: "16:00–18:00",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>title: "L’Illa Diagonal",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>"Centro commerciale elegante e cittadino (1–2 ore).",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=L%E2%80%99Illa%20Diagonal"),</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link("Orari", "https://lilla.com/en/opening-hours/"),</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>],</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>time: "18:00–18:30",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>title: "Rientro in Eixample",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>details: "Taxi consigliato.",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>links: [],</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">              </span>],</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{</p>
-<p class="p1"><span class="Apple-converted-space">              </span>name: "Calcio (appassionati)",</p>
-<p class="p1"><span class="Apple-converted-space">              </span>icon: "football",</p>
-<p class="p1"><span class="Apple-converted-space">              </span>plan: [</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>time: "16:00–17:20",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>title: "Barça Immersive Tour / Museo + Store (Camp Nou area)",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>"1h–1h20 tra museo e shop (accesso allo stadio può variare per lavori).",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link(</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>"Biglietti ufficiali",</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>"https://www.fcbarcelona.com/en/tickets/camp-nou-experience"</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>),</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=Spotify%20Camp%20Nou"),</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>],</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>time: "17:20–17:35",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>title: "Taxi verso Sarrià",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>details: "Spostamento rapido.",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>links: [],</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>time: "17:35–18:05",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>title: "Targa/ricordo dell’Estadio de Sarrià (Italia–Brasile 3–2, 1982)",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>"Momento simbolico nel quartiere: breve sosta foto/ricordo.",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>link(</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>"Mappa (area Sarrià)",</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>"https://www.google.com/maps/search/?api=1&amp;query=Jardins%20del%20Camp%20de%20l%E2%80%99Espanyol%20Barcelona"</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>),</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>],</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>time: "18:05–18:30",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>title: "Rientro in Eixample",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>details: "Taxi consigliato.",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>links: [],</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">              </span>],</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "20:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Eixample",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Cena (strutturata) – suggerimento LP",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "dinner",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi / taxi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Se volete tapas 'istituzione': Cerveseria Catalana (spesso senza prenotazione, andare presto). In alternativa: cena moderna in Eixample.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Cerveseria Catalana", "https://www.google.com/maps/search/?api=1&amp;query=Cerveseria%20Catalana"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Fismuler", "https://www.google.com/maps/search/?api=1&amp;query=Fismuler%20Barcelona"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>],</p>
-<p class="p1"><span class="Apple-converted-space">    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>id: "2026-05-09",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>title: "Raval + Sant Antoni + Palau (18:30) + Cena Casa Lolea",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>badge: "Cultura + concerto",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>focus: ["Raval", "Centric Raval", "Sant Antoni", "Palau 18:30", "Casa Lolea"],</p>
-<p class="p1"><span class="Apple-converted-space">      </span>blocks: [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "10:30–12:00",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "El Raval",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "MACBA (interno o piazza) + passeggiata urbana",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "museum",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Arte contemporanea e atmosfera di piazza. Interessante anche solo l’architettura e la vita attorno.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Biglietti/info", "https://www.macba.cat/en/plan-your-visit/"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=MACBA"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "12:10–12:40",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "El Raval",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Chiesa romanica: Sant Pau del Camp",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "church",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Una delle chiese più antiche della città: piccola, silenziosa, sorprendente.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=Sant%20Pau%20del%20Camp"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "13:30–15:00",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Raval",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Pranzo: Centric Raval",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "food",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Pranzo comodo e centrale. Consiglio: piatti leggeri/tapas.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Info", "https://www.centricbar.com/en/"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=Centric%20Raval"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "15:30–16:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Sant Antoni",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Mercat de Sant Antoni",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "shopping",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Mercato modernista molto locale: perfetto per vivere la città quotidiana.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=Mercat%20de%20Sant%20Antoni"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "17:45",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "El Born",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Arrivo al Palau + ingresso con calma",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "info",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "metro/taxi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Arrivate 30–45 minuti prima per ritirare biglietti e godervi l’edificio.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=Palau%20de%20la%20M%C3%BAsica%20Catalana"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "18:30–20:00",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "El Born",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Concerto: Palau de la Música Catalana (18:30)",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "music",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Concerto serale in uno dei luoghi più belli del modernismo.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link(</p>
-<p class="p1"><span class="Apple-converted-space">              </span>"Biglietti (Palau)",</p>
-<p class="p1"><span class="Apple-converted-space">              </span>"https://entrades.palaumusica.cat/"</p>
-<p class="p1"><span class="Apple-converted-space">            </span>),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "20:45",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Centro",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Cena: Casa Lolea",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "dinner",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "taxi / metro",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Cena conviviale: sangria e piatti da condividere. Prenotazione consigliata.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Prenota", "https://casalolea.com/reserva/"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Mappa", "https://www.google.com/maps/search/?api=1&amp;query=Casa%20Lolea%20Barcelona"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>],</p>
-<p class="p1"><span class="Apple-converted-space">    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>id: "2026-05-10",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>title: "Domenica – Mare + saluti (partenza 17:00)",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>badge: "Leggera",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>focus: ["Passeggiata", "Porto", "Tempo libero"],</p>
-<p class="p1"><span class="Apple-converted-space">      </span>blocks: [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "10:30–12:00",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Barceloneta",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Passeggiata sul mare + Port Vell",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "walk",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "metro + a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Mattina leggera: mare e porto. Evitate i ristoranti turistici sulla prima linea.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Barceloneta", "https://www.google.com/maps/search/?api=1&amp;query=Barceloneta"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>link("Port Vell", "https://www.google.com/maps/search/?api=1&amp;query=Port%20Vell%20Barcelona"),</p>
-<p class="p1"><span class="Apple-converted-space">          </span>],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "12:15–13:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Centro",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Pranzo leggero (tapas) vicino al rientro",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "food",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "a piedi",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Scegliete un bar comodo e non impegnativo. Oggi teniamo margine per bagagli e trasferimento.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>time: "14:30–15:30",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>area: "Eixample",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>title: "Rientro, bagagli, trasferimento",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: "info",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mobility: "taxi / metro",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>details:</p>
-<p class="p1"><span class="Apple-converted-space">            </span>"Check-out e partenza alle 17:00.",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>links: [],</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>],</p>
-<p class="p1"><span class="Apple-converted-space">    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>booking: {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>tickets: [</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>name: "Sagrada Família",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>how: "Sito ufficiale, biglietti a fascia oraria.",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>url: "https://sagradafamilia.org/tickets",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>name: "Park Güell",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>how: "Sito ufficiale, ingresso a orario (arrivare puntuali).",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>url: "https://parkguell.barcelona/en/buy-tickets",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>name: "Museo Picasso",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>how: "Online consigliato per evitare code.",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>url: "https://museupicassobcn.cat/en/plan-your-visit/buy-tickets-and-opening-hours",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>name: "MACBA",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>how: "Online (info e biglietti).",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>url: "https://www.macba.cat/en/plan-your-visit/",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>name: "Palau de la Música (concerto)",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>how: "Acquisto biglietti sul portale ufficiale Entrades.",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>url: "https://entrades.palaumusica.cat/",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>name: "Barça Immersive Tour / Museo",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>how: "Biglietti sul sito ufficiale FC Barcelona.",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>url: "https://www.fcbarcelona.com/en/tickets/camp-nou-experience",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>],</p>
-<p class="p1"><span class="Apple-converted-space">    </span>restaurants: [</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>name: "7 Portes",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>how: "Prenotazione dal sito (scegli orario e numero persone).",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>url: "https://7portes.com/en/book-a-table-restaurant/",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>name: "Casa Lolea",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>how: "Prenotazione dal sito (o canali collegati).",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>url: "https://casalolea.com/reserva/",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>name: "Centric Raval",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>how: "Consigliato contatto/prenotazione via sito (soprattutto weekend).",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>url: "https://www.centricbar.com/en/",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>},</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">const TYPE_META = {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>walk: { label: "Passeggiata", icon: Footprints },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>food: { label: "Pranzo / tapas", icon: Utensils },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>dinner: { label: "Cena", icon: Utensils },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>museum: { label: "Museo", icon: Info },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ticket: { label: "Biglietto", icon: Ticket },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>shopping: { label: "Shopping", icon: ShoppingBag },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>football: { label: "Calcio", icon: Trophy },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>music: { label: "Musica", icon: Music },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>church: { label: "Chiesa", icon: Church },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>split: { label: "Scelta", icon: Users },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>info: { label: "Info", icon: Info },</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">function useStoredState(key, initialValue) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const [state, setState] = useState(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const raw = localStorage.getItem(key);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (!raw) return initialValue;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return JSON.parse(raw);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>} catch {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return initialValue;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const setAndStore = (next) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>setState((prev) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const value = typeof next === "function" ? next(prev) : next;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>localStorage.setItem(key, JSON.stringify(value));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} catch {}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return value;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>return [state, setAndStore];</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function ProgressBar({ value }) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="w-full h-2 rounded-full bg-black/10 overflow-hidden"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;motion.div</p>
-<p class="p1"><span class="Apple-converted-space">        </span>className="h-full bg-black/70"</p>
-<p class="p1"><span class="Apple-converted-space">        </span>initial={{ width: 0 }}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>animate={{ width: `${Math.round(value * 100)}%` }}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>transition={{ type: "spring", stiffness: 120, damping: 20 }}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function Pill({ children }) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span className="inline-flex items-center rounded-full border border-black/10 px-3 py-1 text-xs bg-white/70"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{children}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function LinkList({ links }) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (!links?.length) return null;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="flex flex-wrap gap-2 pt-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{links.map((l) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;a</p>
-<p class="p1"><span class="Apple-converted-space">          </span>key={l.url}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>href={l.url}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>target="_blank"</p>
-<p class="p1"><span class="Apple-converted-space">          </span>rel="noreferrer"</p>
-<p class="p1"><span class="Apple-converted-space">          </span>className="inline-flex items-center gap-1 rounded-full border border-black/10 px-3 py-1 text-xs hover:bg-black/5"</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>{l.label}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;ExternalLink className="w-3 h-3" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function OptionCard({ option, doneSet, toggleDone, query }) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const Icon = option.icon === "shopping" ? ShoppingBag : Trophy;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const filteredPlan = option.plan.filter((p) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const hay = `${p.time} ${p.title} ${p.details}`.toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return hay.includes(query);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="rounded-2xl border border-black/10 bg-white/70 p-4 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="flex items-start justify-between gap-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="flex items-center gap-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="p-2 rounded-xl bg-black/5"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;Icon className="w-5 h-5" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="font-semibold"&gt;{option.name}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="text-sm text-black/60"&gt;Piano in 2–2h30&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="mt-3 space-y-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{filteredPlan.map((p) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const id = `${option.name}::${p.time}::${p.title}`;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const done = !!doneSet[id];</p>
-<p class="p1"><span class="Apple-converted-space">          </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div</p>
-<p class="p1"><span class="Apple-converted-space">              </span>key={id}</p>
-<p class="p1"><span class="Apple-converted-space">              </span>className="rounded-xl border border-black/10 bg-white p-3"</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex items-start gap-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>onClick={() =&gt; toggleDone(id)}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>className="mt-0.5"</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>aria-label={done ? "Segna come non fatto" : "Segna come fatto"}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>{done ? (</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;CheckCircle2 className="w-5 h-5" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>) : (</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;Circle className="w-5 h-5" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="flex-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="flex flex-wrap items-center gap-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;Clock className="w-3 h-3 mr-1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>{p.time}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="font-medium"&gt;{p.title}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="text-sm text-black/70 mt-1"&gt;{p.details}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;LinkList links={p.links} /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>})}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{!filteredPlan.length &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="text-sm text-black/60"&gt;Nessun elemento per questo filtro.&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function BlockCard({ block, doneSet, toggleDone, query }) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const meta = TYPE_META[block.type] || TYPE_META.info;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const Icon = meta.icon;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const id = `${block.time}::${block.title}`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const done = !!doneSet[id];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const hay = `${block.time} ${block.area} ${block.title} ${block.details}`.toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (!hay.includes(query)) return null;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;motion.div</p>
-<p class="p1"><span class="Apple-converted-space">      </span>layout</p>
-<p class="p1"><span class="Apple-converted-space">      </span>initial={{ opacity: 0, y: 8 }}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>animate={{ opacity: 1, y: 0 }}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>exit={{ opacity: 0, y: -8 }}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>className="rounded-2xl border border-black/10 bg-white/70 p-4 shadow-sm"</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="flex items-start gap-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button</p>
-<p class="p1"><span class="Apple-converted-space">          </span>onClick={() =&gt; toggleDone(id)}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>className="mt-1"</p>
-<p class="p1"><span class="Apple-converted-space">          </span>aria-label={done ? "Segna come non fatto" : "Segna come fatto"}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>{done ? (</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;CheckCircle2 className="w-5 h-5" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>) : (</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;Circle className="w-5 h-5" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="flex-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="flex flex-wrap items-center gap-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;Clock className="w-3 h-3 mr-1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>{block.time}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;MapPin className="w-3 h-3 mr-1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>{block.area}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;Icon className="w-3 h-3 mr-1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>{meta.label}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{block.mobility &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{block.mobility.includes("a piedi") ? (</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;Footprints className="w-3 h-3 mr-1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>) : (</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;Train className="w-3 h-3 mr-1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{block.mobility}</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="mt-2 font-semibold text-base"&gt;{block.title}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="text-sm text-black/70 mt-1"&gt;{block.details}&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>{block.type === "split" &amp;&amp; block.options?.length ? (</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="mt-3 grid md:grid-cols-2 gap-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>{block.options.map((opt) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;OptionCard</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>key={opt.name}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>option={opt}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>doneSet={doneSet}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>toggleDone={toggleDone}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>query={query}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>) : (</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;LinkList links={block.links} /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/motion.div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function BookingCard({ title, items }) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="rounded-2xl border border-black/10 bg-white/70 p-4 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="font-semibold"&gt;{title}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="mt-3 space-y-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{items.map((it) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div</p>
-<p class="p1"><span class="Apple-converted-space">            </span>key={it.url}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>className="rounded-xl border border-black/10 bg-white p-3"</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="flex items-start justify-between gap-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="font-medium"&gt;{it.name}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="text-sm text-black/70"&gt;{it.how}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;a</p>
-<p class="p1"><span class="Apple-converted-space">                </span>href={it.url}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>target="_blank"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>rel="noreferrer"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>className="inline-flex items-center gap-1 rounded-full border border-black/10 px-3 py-1 text-xs hover:bg-black/5"</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>Apri</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;ExternalLink className="w-3 h-3" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">export default function BarcelonaItinerarySite() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const [activeDay, setActiveDay] = useState(DATA.days[0].id);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const [tab, setTab] = useState("itinerario");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const [queryRaw, setQueryRaw] = useState("");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const [filterType, setFilterType] = useState("all");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const [done, setDone] = useStoredState(STORAGE_KEY, {});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const query = queryRaw.trim().toLowerCase();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const day = useMemo(</p>
-<p class="p1"><span class="Apple-converted-space">    </span>() =&gt; DATA.days.find((d) =&gt; d.id === activeDay) || DATA.days[0],</p>
-<p class="p1"><span class="Apple-converted-space">    </span>[activeDay]</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const visibleBlocks = useMemo(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const blocks = day.blocks || [];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const byType =</p>
-<p class="p1"><span class="Apple-converted-space">      </span>filterType === "all" ? blocks : blocks.filter((b) =&gt; b.type === filterType);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (!query) return byType;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return byType.filter((b) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const hay = `${b.time} ${b.area} ${b.title} ${b.details}`.toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (hay.includes(query)) return true;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (b.type === "split" &amp;&amp; b.options) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return b.options.some((opt) =&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>opt.plan.some((p) =&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>`${p.time} ${p.title} ${p.details}`.toLowerCase().includes(query)</p>
-<p class="p1"><span class="Apple-converted-space">          </span>)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return false;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}, [day, query, filterType]);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const allIds = useMemo(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const ids = [];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>for (const b of day.blocks) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>ids.push(`${b.time}::${b.title}`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (b.type === "split" &amp;&amp; b.options) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>for (const opt of b.options) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>for (const p of opt.plan) ids.push(`${opt.name}::${p.time}::${p.title}`);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return ids;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}, [day]);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const doneCount = allIds.filter((id) =&gt; done[id]).length;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const progress = allIds.length ? doneCount / allIds.length : 0;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const toggleDone = (id) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>setDone((prev) =&gt; ({ ...prev, [id]: !prev[id] }));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const reset = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>setDone({});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const typeOptions = useMemo(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const set = new Set(day.blocks.map((b) =&gt; b.type));</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return ["all", ...Array.from(set)];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}, [day]);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="min-h-screen bg-gradient-to-b from-white to-black/5 text-black"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div className="max-w-6xl mx-auto px-4 py-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{/* Header */}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="rounded-3xl border border-black/10 bg-white/70 p-6 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="text-2xl md:text-3xl font-bold tracking-tight"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{DATA.title}</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="text-sm md:text-base text-black/70 mt-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{DATA.subtitle}</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex flex-wrap gap-2 mt-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{DATA.notes.map((n) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;Pill key={n}&gt;{n}&lt;/Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="w-full md:w-80"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex items-center justify-between text-sm mb-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="font-medium"&gt;Progressi del giorno&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="text-black/60"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>{doneCount}/{allIds.length}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;ProgressBar value={progress} /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="flex items-center gap-2 mt-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>onClick={reset}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>className="rounded-full border border-black/10 px-3 py-1 text-xs hover:bg-black/5"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>Reset spunte</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="text-xs text-black/60"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>Salvato sul dispositivo</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>{/* Tabs */}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="mt-6 flex flex-wrap gap-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>{[</p>
-<p class="p1"><span class="Apple-converted-space">              </span>{ id: "itinerario", label: "Itinerario" },</p>
-<p class="p1"><span class="Apple-converted-space">              </span>{ id: "prenotazioni", label: "Prenotazioni" },</p>
-<p class="p1"><span class="Apple-converted-space">              </span>{ id: "mobilita", label: "Mobilità" },</p>
-<p class="p1"><span class="Apple-converted-space">            </span>].map((t) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button</p>
-<p class="p1"><span class="Apple-converted-space">                </span>key={t.id}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>onClick={() =&gt; setTab(t.id)}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>className={cx(</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>"rounded-full border px-4 py-2 text-sm",</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>tab === t.id</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>? "border-black/30 bg-black text-white"</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>: "border-black/10 bg-white/60 hover:bg-black/5"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{t.label}</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>{/* Content */}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="mt-6 grid lg:grid-cols-12 gap-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>{/* Sidebar */}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="lg:col-span-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="rounded-3xl border border-black/10 bg-white/70 p-4 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="font-semibold"&gt;Giorni&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="mt-3 space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{DATA.days.map((d) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;button</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>key={d.id}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>onClick={() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>setActiveDay(d.id);</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>setQueryRaw("");</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>setFilterType("all");</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>className={cx(</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>"w-full text-left rounded-2xl border px-4 py-3",</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>activeDay === d.id</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>? "border-black/30 bg-black text-white"</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>: "border-black/10 bg-white hover:bg-black/5"</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="text-xs opacity-80"&gt;{formatDate(d.id)}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="font-semibold mt-1 leading-snug"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>{d.title}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="mt-2 flex flex-wrap gap-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>className={cx(</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>"inline-flex items-center rounded-full px-2.5 py-1 text-[11px]",</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>activeDay === d.id</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>? "bg-white/15"</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>: "bg-black/5"</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{d.badge}</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>{d.focus.slice(0, 3).map((f) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>key={f}</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>className={cx(</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>"inline-flex items-center rounded-full px-2.5 py-1 text-[11px]",</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>activeDay === d.id</p>
-<p class="p1"><span class="Apple-converted-space">                              </span>? "bg-white/15"</p>
-<p class="p1"><span class="Apple-converted-space">                              </span>: "bg-black/5"</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>{f}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>{tab === "itinerario" &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div className="rounded-3xl border border-black/10 bg-white/70 p-4 shadow-sm mt-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="font-semibold"&gt;Cerca e filtra&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="mt-3 flex items-center gap-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="flex-1 relative"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-black/50" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>value={queryRaw}</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>onChange={(e) =&gt; setQueryRaw(e.target.value)}</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>placeholder="Cerca luogo, ristorante, orario…"</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>className="w-full rounded-2xl border border-black/10 bg-white px-10 py-2 text-sm outline-none focus:ring-2 focus:ring-black/20"</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="relative"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-black/50" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;select</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>value={filterType}</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>onChange={(e) =&gt; setFilterType(e.target.value)}</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>className="rounded-2xl border border-black/10 bg-white pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black/20"</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>{typeOptions.map((t) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;option key={t} value={t}&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>{t === "all" ? "Tutto" : TYPE_META[t]?.label || t}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/select&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="text-xs text-black/60 mt-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>Suggerimento: filtra “Biglietto” per vedere cosa prenotare.</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>{/* Main */}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div className="lg:col-span-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;AnimatePresence mode="wait"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>{tab === "itinerario" &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;motion.div</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>key="itinerario"</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>initial={{ opacity: 0, y: 10 }}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>animate={{ opacity: 1, y: 0 }}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>exit={{ opacity: 0, y: -10 }}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>className="space-y-4"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="rounded-3xl border border-black/10 bg-white/70 p-4 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="flex items-start justify-between gap-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="text-sm text-black/60"&gt;{formatDate(day.id)}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="text-xl font-bold mt-1"&gt;{day.title}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex flex-wrap gap-2 mt-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>{day.focus.map((f) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;Pill key={f}&gt;{f}&lt;/Pill&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;a</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>href={</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>"https://www.google.com/maps/search/?api=1&amp;query=" +</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>encodeURIComponent("Barcelona")</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>target="_blank"</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>rel="noreferrer"</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>className="hidden md:inline-flex items-center gap-1 rounded-full border border-black/10 px-3 py-2 text-sm hover:bg-black/5"</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>Apri mappa</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;ExternalLink className="w-4 h-4" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;AnimatePresence&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>{visibleBlocks.map((b) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;BlockCard</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>key={`${b.time}::${b.title}`}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>block={b}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>doneSet={done}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>toggleDone={toggleDone}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>query={query}</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/AnimatePresence&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                  </span>{!visibleBlocks.length &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="rounded-3xl border border-black/10 bg-white/70 p-6 shadow-sm text-black/70"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>Nessun elemento trovato con questi filtri.</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/motion.div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>)}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">              </span>{tab === "prenotazioni" &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;motion.div</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>key="prenotazioni"</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>initial={{ opacity: 0, y: 10 }}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>animate={{ opacity: 1, y: 0 }}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>exit={{ opacity: 0, y: -10 }}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>className="space-y-4"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="rounded-3xl border border-black/10 bg-white/70 p-4 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="text-xl font-bold"&gt;Prenotazioni&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="text-sm text-black/70 mt-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>Link diretti ai siti ufficiali per biglietti e tavoli.</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="grid md:grid-cols-2 gap-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;BookingCard title="Biglietti (luoghi)" items={DATA.booking.tickets} /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;BookingCard</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>title="Ristoranti / bar"</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>items={DATA.booking.restaurants}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="rounded-3xl border border-black/10 bg-white/70 p-4 shadow-sm text-sm text-black/70"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>Nota: alcuni posti (es. tapas molto popolari) possono non accettare prenotazioni.</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>In quel caso: andare presto o in orari “smart”.</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/motion.div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>)}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">              </span>{tab === "mobilita" &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;motion.div</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>key="mobilita"</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>initial={{ opacity: 0, y: 10 }}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>animate={{ opacity: 1, y: 0 }}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>exit={{ opacity: 0, y: -10 }}</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>className="space-y-4"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="rounded-3xl border border-black/10 bg-white/70 p-4 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="text-xl font-bold"&gt;Mobilità consigliata&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="text-sm text-black/70 mt-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>Strategia: 70% a piedi + metro quando serve + taxi la sera o per salite.</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="mt-3 grid md:grid-cols-3 gap-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="rounded-2xl border border-black/10 bg-white p-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex items-center gap-2 font-semibold"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;Footprints className="w-4 h-4" /&gt; A piedi</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="text-sm text-black/70 mt-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>Eixample, Gotico, Born, Raval, Sant Antoni: perfetti camminando.</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="rounded-2xl border border-black/10 bg-white p-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex items-center gap-2 font-semibold"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;Train className="w-4 h-4" /&gt; Metro</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="text-sm text-black/70 mt-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>Per Sagrada Família, Park Güell, Barceloneta, Camp Nou.</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div className="rounded-2xl border border-black/10 bg-white p-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex items-center gap-2 font-semibold"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;Clock className="w-4 h-4" /&gt; Taxi</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="text-sm text-black/70 mt-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>Rientri serali, spostamenti rapidi (Camp Nou → Sarrià).</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div className="rounded-3xl border border-black/10 bg-white/70 p-4 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div className="font-semibold"&gt;Biglietti trasporti&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul className="list-disc pl-5 text-sm text-black/70 mt-2 space-y-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span className="font-medium"&gt;T-casual&lt;/span&gt; (10 corse) se camminate molto.</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span className="font-medium"&gt;Hola Barcelona&lt;/span&gt; (48/72h) se prevedete tanto metro.</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>Suggerimento: tenete sempre margine di 10–15 minuti sugli spostamenti.</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/motion.div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/AnimatePresence&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="py-8 text-center text-xs text-black/50"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>Creato per il vostro gruppo • Versione 1 • Modificabile</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1">}</p>
+  <header>
+    <h1>Barcellona – Itinerario del gruppo</h1>
+    <p>7–10 maggio | Base: Eixample | Pranzi: bar/tapas | Cene: più strutturate</p>
+  </header>
+
+  <main>
+    <div class="note">
+      <b>Come usare questa pagina</b>
+      Aprila da WhatsApp/Safari e, se vuoi, salva: <i>Condividi → Aggiungi alla schermata Home</i>.
+    </div>
+
+    <div class="day">
+      <h2>Giovedì 7 maggio – Centro storico & Born <span class="pill">Cena: 7 Portes</span></h2>
+
+      <div class="block">
+        <div class="time">10:30–11:30</div>
+        <div class="area">Plaça de Catalunya</div>
+        <div class="desc">Shopping (1h): El Corte Inglés (comodo per toilette/caffè e acquisti rapidi).</div>
+        <div class="links"><a href="https://www.google.com/maps/search/?api=1&query=El+Corte+Ingl%C3%A9s+Pla%C3%A7a+de+Catalunya" target="_blank" rel="noreferrer">Mappa</a></div>
+      </div>
+
+      <div class="block">
+        <div class="time">11:30–12:15</div>
+        <div class="area">La Rambla / Mercat de la Boqueria</div>
+        <div class="desc">Passeggiata su La Rambla + ingresso alla Boquería (meglio al mattino).</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=La+Rambla+Barcelona" target="_blank" rel="noreferrer">Rambla</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Mercat+de+la+Boqueria" target="_blank" rel="noreferrer">Boquería</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">12:15–14:00</div>
+        <div class="area">Barri Gòtic</div>
+        <div class="desc">Vicoli e piazze + chiesa di Santa Maria del Pi (gotico catalano).</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=Barri+G%C3%B2tic+Barcelona" target="_blank" rel="noreferrer">Mappa</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Bas%C3%ADlica+de+Santa+Maria+del+Pi" target="_blank" rel="noreferrer">Santa Maria del Pi</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">14:00–15:15</div>
+        <div class="area">El Born</div>
+        <div class="desc">Pranzo bar/tapas (Born): El Xampanyet oppure Bar del Pla.</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=El+Xampanyet+Barcelona" target="_blank" rel="noreferrer">El Xampanyet</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Bar+del+Pla+Barcelona" target="_blank" rel="noreferrer">Bar del Pla</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">15:30–17:00</div>
+        <div class="area">El Born</div>
+        <div class="desc">Museu Picasso (prenotazione consigliata).</div>
+        <div class="links">
+          <a href="https://museupicassobcn.cat/en/plan-your-visit/buy-tickets-and-opening-hours" target="_blank" rel="noreferrer">Biglietti</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Museu+Picasso+Barcelona" target="_blank" rel="noreferrer">Mappa</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">17:00–18:30</div>
+        <div class="area">El Born</div>
+        <div class="desc">Passeggiata + visita a Santa Maria del Mar (gotico catalano, atmosfera intensa).</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=Bas%C3%ADlica+de+Santa+Maria+del+Mar" target="_blank" rel="noreferrer">Santa Maria del Mar</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">20:30</div>
+        <div class="area">Port Vell / Born</div>
+        <div class="desc">Cena: 7 Portes (storico). Prenotazione consigliata.</div>
+        <div class="links">
+          <a href="https://7portes.com/en/book-a-table-restaurant/" target="_blank" rel="noreferrer">Prenota</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=7+Portes+Barcelona" target="_blank" rel="noreferrer">Mappa</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="day">
+      <h2>Venerdì 8 maggio – Gaudí, Gràcia & biforcazione <span class="pill">Shopping vs Calcio</span></h2>
+
+      <div class="block">
+        <div class="time">09:30–10:30</div>
+        <div class="area">Passeig de Gràcia</div>
+        <div class="desc">Passeggiata modernista: esterni Casa Batlló + Casa Milà (La Pedrera).</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=Casa+Batll%C3%B3" target="_blank" rel="noreferrer">Casa Batlló</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Casa+Mil%C3%A0+La+Pedrera" target="_blank" rel="noreferrer">Casa Milà</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">11:00–12:30</div>
+        <div class="area">Eixample</div>
+        <div class="desc">Sagrada Família (biglietto a fascia oraria).</div>
+        <div class="links">
+          <a href="https://sagradafamilia.org/tickets" target="_blank" rel="noreferrer">Biglietti ufficiali</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Sagrada+Fam%C3%ADlia" target="_blank" rel="noreferrer">Mappa</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">13:00–14:30</div>
+        <div class="area">Gràcia</div>
+        <div class="desc">Pranzo bar/tapas + Mercat de la Llibertat (quartiere molto locale).</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=Mercat+de+la+Llibertat" target="_blank" rel="noreferrer">Mercat de la Llibertat</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">15:00–16:15</div>
+        <div class="area">Gràcia</div>
+        <div class="desc">Park Güell (ingresso a orario).</div>
+        <div class="links">
+          <a href="https://parkguell.barcelona/en/buy-tickets" target="_blank" rel="noreferrer">Biglietti ufficiali</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Park+G%C3%BCell" target="_blank" rel="noreferrer">Mappa</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">16:00–18:30</div>
+        <div class="area">Biforcazione (2–3 ore)</div>
+        <div class="desc"><b>Opzione A (Shopping)</b>: L’Illa Diagonal (1–2h) → rientro in Eixample.<br>
+        <b>Opzione B (Calcio)</b>: Barça Immersive Tour/Museo + Store → targa/ricordo Sarrià (Italia–Brasile 3–2, 1982) → rientro.</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=L%E2%80%99Illa+Diagonal" target="_blank" rel="noreferrer">L’Illa Diagonal</a>
+          <a href="https://www.fcbarcelona.com/en/tickets/camp-nou-experience" target="_blank" rel="noreferrer">Biglietti Barça Tour</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Spotify+Camp+Nou" target="_blank" rel="noreferrer">Mappa Camp Nou</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Jardins+del+Camp+de+l%E2%80%99Espanyol+Barcelona" target="_blank" rel="noreferrer">Mappa Sarrià</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">20:30</div>
+        <div class="area">Eixample</div>
+        <div class="desc">Cena strutturata in Eixample (suggerimento: Cerveseria Catalana / alternativa moderna).</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=Cerveseria+Catalana" target="_blank" rel="noreferrer">Cerveseria Catalana</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Fismuler+Barcelona" target="_blank" rel="noreferrer">Fismuler</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="day">
+      <h2>Sabato 9 maggio – Raval, concerto & Casa Lolea <span class="pill">Palau 18:30</span></h2>
+
+      <div class="block">
+        <div class="time">10:30–12:00</div>
+        <div class="area">El Raval</div>
+        <div class="desc">MACBA + passeggiata urbana (anche solo esterni/atmosfera).</div>
+        <div class="links">
+          <a href="https://www.macba.cat/en/plan-your-visit/" target="_blank" rel="noreferrer">Info/biglietti</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=MACBA" target="_blank" rel="noreferrer">Mappa</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">12:10–12:40</div>
+        <div class="area">El Raval</div>
+        <div class="desc">Chiesa romanica: Sant Pau del Camp (piccola, silenziosa, sorprendente).</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=Sant+Pau+del+Camp" target="_blank" rel="noreferrer">Mappa</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">13:30–15:00</div>
+        <div class="area">Raval</div>
+        <div class="desc">Pranzo: Centric Raval.</div>
+        <div class="links">
+          <a href="https://www.centricbar.com/en/" target="_blank" rel="noreferrer">Info</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Centric+Raval" target="_blank" rel="noreferrer">Mappa</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">15:30–16:30</div>
+        <div class="area">Sant Antoni</div>
+        <div class="desc">Mercat de Sant Antoni (molto locale).</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=Mercat+de+Sant+Antoni" target="_blank" rel="noreferrer">Mappa</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">18:30</div>
+        <div class="area">El Born</div>
+        <div class="desc">Concerto al Palau de la Música Catalana (arrivare 30–45 min prima).</div>
+        <div class="links">
+          <a href="https://entrades.palaumusica.cat/" target="_blank" rel="noreferrer">Biglietti</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Palau+de+la+M%C3%BAsica+Catalana" target="_blank" rel="noreferrer">Mappa</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">20:45</div>
+        <div class="area">Centro</div>
+        <div class="desc">Cena: Casa Lolea (prenotazione consigliata).</div>
+        <div class="links">
+          <a href="https://casalolea.com/reserva/" target="_blank" rel="noreferrer">Prenota</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Casa+Lolea+Barcelona" target="_blank" rel="noreferrer">Mappa</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="day">
+      <h2>Domenica 10 maggio – Mare & partenza <span class="pill">Partenza 17:00</span></h2>
+
+      <div class="block">
+        <div class="time">10:30–12:00</div>
+        <div class="area">Barceloneta & Port Vell</div>
+        <div class="desc">Passeggiata sul mare + porto (evitare i ristoranti più turistici in prima linea).</div>
+        <div class="links">
+          <a href="https://www.google.com/maps/search/?api=1&query=Barceloneta" target="_blank" rel="noreferrer">Barceloneta</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Port+Vell+Barcelona" target="_blank" rel="noreferrer">Port Vell</a>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="time">12:15–13:30</div>
+        <div class="area">Centro (comodo per rientro)</div>
+        <div class="desc">Pranzo leggero: scegliete un bar/tapas senza impegnarvi troppo (oggi margine per bagagli).</div>
+      </div>
+
+      <div class="block">
+        <div class="time">14:30–15:30</div>
+        <div class="area">Eixample</div>
+        <div class="desc">Rientro, bagagli e trasferimento verso l’aeroporto.</div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    Itinerario condivisibile via WhatsApp • Pagina HTML semplice (senza React)
+  </footer>
 </body>
 </html>
