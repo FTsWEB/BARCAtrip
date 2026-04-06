@@ -2,654 +2,581 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Barcellona – Itinerario del gruppo</title>
-  <meta name="theme-color" content="#153a6b" />
+  <meta name="description" content="Itinerario 7–10 maggio – Base: Hotel Gran Via Catalunya. Link rapidi a mappe, biglietti e taxi." />
   <style>
     :root{
-      --bg:#f3f5f7;
-      --card:#ffffff;
-      --text:#101828;
-      --muted:#667085;
-      --brand:#153a6b;
-      --brand2:#2f6fb6;
-      --line:#e6e8ec;
-      --shadow: 0 12px 28px rgba(16,24,40,.10);
-      --radius:18px;
+      --bg:#0b1220;
+      --card:#0f1a33;
+      --text:#eaf0ff;
+      --muted:rgba(234,240,255,.74);
+      --line:rgba(255,255,255,.10);
+      --accent:#7dd3fc;
+      --accent2:#a78bfa;
+      --shadow:0 16px 50px rgba(0,0,0,.35);
+      --radius:20px;
     }
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
-      background:var(--bg);
-      line-height:1.45;
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(125,211,252,.25), transparent 60%),
+        radial-gradient(1200px 700px at 90% 10%, rgba(167,139,250,.22), transparent 55%),
+        var(--bg);
     }
-    a{color:var(--brand2); text-decoration:none}
-    a:hover{text-decoration:underline}
-
-    /* HERO */
-    header{
-      padding: 44px 18px 64px;
-      background: radial-gradient(1200px 500px at 20% 10%, rgba(255,255,255,.20), transparent 55%),
-                  linear-gradient(135deg, var(--brand), var(--brand2));
-      color:#fff;
-      position:relative;
-      overflow:hidden;
-    }
-    header::after{
-      content:"";
-      position:absolute; inset:-40px -120px auto auto;
-      width:420px; height:420px;
-      background:rgba(255,255,255,.10);
-      border-radius:999px;
-      filter: blur(0px);
-      transform: rotate(18deg);
-    }
-    .wrap{max-width:980px; margin:0 auto}
+    a{color:inherit}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px 14px 60px}
     .hero{
-      display:flex; flex-direction:column; gap:10px;
-      position:relative; z-index:1;
+      border:1px solid var(--line);
+      border-radius:28px;
+      overflow:hidden;
+      background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow:var(--shadow);
     }
-    .hero h1{margin:0; font-size:2rem; letter-spacing:-.02em}
-    .hero p{margin:0; opacity:.92}
-    .hero .badges{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+    .heroTop{
+      padding:20px 18px 16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      align-items:flex-start;
+    }
     .badge{
-      display:inline-flex; align-items:center; gap:8px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
       padding:8px 12px;
       border-radius:999px;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.20);
-      font-size:.9rem;
-      backdrop-filter: blur(6px);
+      font-size:12px;
+      color:var(--muted);
     }
-
-    /* NAV */
-    .nav{
-      position:sticky; top:0;
-      z-index:10;
-      background:rgba(243,245,247,.86);
-      backdrop-filter: blur(10px);
-      border-bottom:1px solid var(--line);
-    }
-    .nav .wrap{
-      display:flex; gap:10px; align-items:center;
-      padding:10px 14px;
-      overflow:auto;
-    }
-    .chip{
-      white-space:nowrap;
+    h1{margin:4px 0 8px;font-size:28px;letter-spacing:-.02em}
+    .sub{color:var(--muted);font-size:14px;line-height:1.4}
+    .pillRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
       padding:10px 12px;
       border-radius:999px;
       border:1px solid var(--line);
-      background:#fff;
-      font-size:.92rem;
+      background:rgba(255,255,255,.06);
+      font-size:13px;
       color:var(--text);
-      box-shadow: 0 2px 10px rgba(16,24,40,.06);
+      text-decoration:none;
+      white-space:nowrap;
     }
-    .chip strong{color:var(--brand)}
-    .chip:hover{background:#fbfbfc}
-
-    main{padding: 0 14px 30px}
+    .pill:hover{background:rgba(255,255,255,.1)}
+    .heroImg{
+      height:180px;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,.55)),
+        url("https://images.unsplash.com/photo-1504805572947-34fad45aed93?auto=format&fit=crop&w=1600&q=70");
+      background-size:cover;
+      background-position:center;
+    }
+    .nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      padding:12px 14px;
+      border-top:1px solid var(--line);
+      background:rgba(0,0,0,.12);
+    }
+    .nav a{
+      text-decoration:none;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      padding:9px 11px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--text);
+    }
     .grid{
-      max-width:980px; margin:-36px auto 0;
-      display:grid; gap:16px;
-      grid-template-columns: 1fr;
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:16px;
+      margin-top:16px;
     }
-
-    /* CARDS */
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr}
+    }
     .card{
-      background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
-      box-shadow: var(--shadow);
+      background:rgba(255,255,255,.06);
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
       overflow:hidden;
     }
-    .card .hd{
-      padding:18px 18px 12px;
-      display:flex; gap:12px; align-items:flex-start; justify-content:space-between;
+    .cardHeader{
+      padding:14px 16px;
+      background:linear-gradient(135deg, rgba(125,211,252,.16), rgba(167,139,250,.10));
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
     }
-    .card .hd h2{
-      margin:0; font-size:1.25rem; letter-spacing:-.01em;
-      color:var(--brand);
-    }
-    .card .hd .sub{margin-top:6px; color:var(--muted); font-size:.95rem}
-    .card .body{padding: 0 18px 18px}
-
-    /* IMAGE */
-    .heroimg{
-      width:100%;
-      height: 210px;
-      object-fit: cover;
-      display:block;
-      border-top:1px solid rgba(255,255,255,.25);
-    }
-    .imgwrap{position:relative}
-    .imgcap{
-      position:absolute; left:14px; bottom:14px;
+    .cardHeader h2{margin:0;font-size:18px}
+    .tag{
       padding:8px 10px;
-      background: rgba(16,24,40,.55);
-      border:1px solid rgba(255,255,255,.25);
-      color:#fff;
-      border-radius:12px;
-      font-size:.88rem;
-      backdrop-filter: blur(6px);
-    }
-
-    /* TIMEBLOCKS */
-    .block{
-      display:grid;
-      grid-template-columns: 104px 1fr;
-      gap:12px;
-      padding:12px 0;
-      border-top:1px solid var(--line);
-    }
-    .block:first-child{border-top:none}
-    .time{
-      font-weight:700;
-      color:var(--brand);
-      font-size:.95rem;
-    }
-    .place{font-weight:600}
-    .meta{color:var(--muted); font-size:.92rem; margin-top:2px}
-    .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
-    .btn{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px;
       border-radius:999px;
+      font-size:12px;
       border:1px solid var(--line);
-      background:#fff;
-      color:var(--text);
-      font-size:.92rem;
-    }
-    .btn:hover{background:#fbfbfc}
-    .btn.primary{
-      background: linear-gradient(135deg, var(--brand), var(--brand2));
-      color:#fff; border:0;
-    }
-
-    /* DETAILS (collapsible) */
-    details{
-      margin-top:12px;
-      border:1px dashed var(--line);
-      border-radius:14px;
-      padding:10px 12px;
-      background:#fafbfc;
-    }
-    summary{
-      cursor:pointer;
-      font-weight:600;
-      color:var(--brand);
-    }
-    .list{
-      margin:10px 0 0;
-      padding-left:18px;
-      color:var(--text);
-    }
-    .list li{margin:6px 0}
-    .hint{color:var(--muted); font-size:.92rem; margin-top:8px}
-
-    /* LAYOUT DESKTOP */
-    @media (min-width: 980px){
-      .grid{grid-template-columns: 1fr}
-      .hero h1{font-size:2.25rem}
-      .heroimg{height: 240px}
-      .block{grid-template-columns: 130px 1fr}
-    }
-
-    footer{
-      text-align:center;
+      background:rgba(0,0,0,.18);
       color:var(--muted);
-      font-size:.85rem;
-      padding:18px 14px 30px;
+      white-space:nowrap;
+    }
+    .section{padding:16px}
+    .infoList{
+      margin:0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:10px;
+    }
+    .infoItem{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.05);
+      padding:12px;
+    }
+    .infoItem strong{display:block;font-size:13px;margin-bottom:4px}
+    .infoItem span{display:block;color:var(--muted);font-size:13px;line-height:1.35}
+    .btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.07);
+      text-decoration:none;
+      font-size:13px;
+      color:var(--text);
+    }
+    .btn:hover{background:rgba(255,255,255,.12)}
+    .btnPrimary{
+      background:linear-gradient(135deg, rgba(125,211,252,.25), rgba(167,139,250,.18));
+      border-color:rgba(125,211,252,.35);
+    }
+    .day{
+      margin-top:16px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      overflow:hidden;
+      background:rgba(255,255,255,.05);
+      box-shadow:var(--shadow);
+    }
+    .dayTop{
+      padding:16px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .dayTop h3{margin:0;font-size:20px;letter-spacing:-.01em}
+    .dayTop p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .dayImg{
+      height:150px;
+      background-size:cover;
+      background-position:center;
+      border-bottom:1px solid var(--line);
+    }
+    .dayBody{padding:14px 14px 16px;display:grid;gap:12px}
+    .slot{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      border-radius:18px;
+      padding:12px;
+    }
+    .slotHead{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .time{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight:800;
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,.18);
+      border:1px solid var(--line);
+      white-space:nowrap;
+    }
+    .where{color:var(--muted);font-size:13px}
+    .title{margin:10px 0 6px;font-weight:800;font-size:15px}
+    .desc{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+    .note{
+      margin-top:14px;
+      color:rgba(234,240,255,.75);
+      font-size:12px;
+      text-align:center;
+    }
+    .footer{
+      margin-top:18px;
+      text-align:center;
+      color:rgba(234,240,255,.55);
+      font-size:12px;
     }
   </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <div class="hero" id="top">
+      <div class="heroTop">
+        <div style="flex:1; min-width:260px">
+          <div class="badge">📍 Base: <strong style="color:var(--text)">Hotel Gran Via Catalunya</strong> · Zona Plaça de Catalunya</div>
+          <h1>Barcellona – Itinerario del gruppo</h1>
+          <div class="sub">
+            7–10 maggio · Pranzi <b>bar/tapas</b>, cene <b>più strutturate</b><br>
+            ✈️ Arrivo: <b>7/5 ore 09:45</b> (El Prat) · ✈️ Partenza: <b>10/5 ore 19:10</b>
+          </div>
+          <div class="pillRow">
+            <a class="pill" href="#base">🚕 Base & Taxi</a>
+            <a class="pill" href="#d7">Giovedì 7</a>
+            <a class="pill" href="#d8">Venerdì 8</a>
+            <a class="pill" href="#d9">Sabato 9</a>
+            <a class="pill" href="#d10">Domenica 10</a>
+          </div>
+        </div>
+      </div>
+      <div class="heroImg" aria-label="Panorama Barcellona"></div>
+      <div class="nav">
+        <a href="#base">Base & Taxi</a>
+        <a href="#d7">7 maggio</a>
+        <a href="#d8">8 maggio</a>
+        <a href="#d9">9 maggio</a>
+        <a href="#d10">10 maggio</a>
+      </div>
+    </div>
 
-<header>
-  <div class="wrap hero">
-    <h1>Barcellona – Itinerario del gruppo 🇪🇸</h1>
-    <p>7–10 maggio · Base: <strong>Hotel Gran Via Catalunya</strong> · Pranzi bar/tapas, cene strutturate</p>
-    <div class="badges">
-      <span class="badge">✈️ Arrivo: 7/5 ore <strong>09:45</strong> (El Prat)</span>
-      <span class="badge">✈️ Partenza: 10/5 ore <strong>19:10</strong></span>
-      <span class="badge">🚕 Taxi rientro consigliato: <strong>16:00</strong> dall’hotel</span>
+    <div class="grid" id="base">
+      <div class="card">
+        <div class="cardHeader">
+          <h2>🏨 Base & trasferimenti</h2>
+          <div class="tag">Hotel · aeroporto · taxi</div>
+        </div>
+        <div class="section">
+          <ul class="infoList">
+            <li class="infoItem">
+              <strong>Hotel Gran Via Catalunya</strong>
+              <span>Partiamo e rientriamo qui ogni giorno.</span>
+              <div class="btnRow">
+                <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://www.granviacatalunya.com/">🌐 Sito hotel</a>
+                <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Hotel%20Gran%20Via%20Catalunya%20Barcelona">🗺️ Mappa hotel</a>
+              </div>
+            </li>
+            <li class="infoItem">
+              <strong>Arrivo 7 maggio – El Prat → Hotel</strong>
+              <span>Taxi stimato 30–45 min. Deposito bagagli e partenza per il centro.</span>
+              <div class="btnRow">
+                <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/dir/?api=1&origin=Barcelona%20El%20Prat%20Airport&destination=Hotel%20Gran%20Via%20Catalunya%20Barcelona&travelmode=driving">🚕 Percorso taxi</a>
+              </div>
+            </li>
+            <li class="infoItem">
+              <strong>Rientro 10 maggio – Hotel → El Prat</strong>
+              <span><b>Consiglio:</b> prenota/chiama taxi per le <b>16:00</b> dall’hotel (volo 19:10).</span>
+              <div class="btnRow">
+                <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://www.taxibarcelona.cat/">📞 Taxi Barcelona</a>
+                <a class="btn" target="_blank" rel="noreferrer" href="https://www.free-now.com/">📱 FREE NOW</a>
+                <a class="btn" target="_blank" rel="noreferrer" href="https://www.cabify.com/">🚗 Cabify</a>
+                <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/dir/?api=1&origin=Hotel%20Gran%20Via%20Catalunya%20Barcelona&destination=Barcelona%20El%20Prat%20Airport&travelmode=driving">🗺️ Percorso</a>
+              </div>
+            </li>
+          </ul>
+          <div class="note">Tip: i pulsanti “Mappa / Percorso” aprono direttamente Google Maps.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cardHeader">
+          <h2>🎟️ Prenotazioni</h2>
+          <div class="tag">Link ufficiali</div>
+        </div>
+        <div class="section">
+          <div class="btnRow">
+            <a class="btn" target="_blank" rel="noreferrer" href="https://sagradafamilia.org/tickets">Sagrada Família</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://parkguell.barcelona/en/buy-tickets">Park Güell</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://museupicassobcn.cat/en/plan-your-visit/buy-tickets-and-opening-hours">Museo Picasso</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.macba.cat/en/plan-your-visit/">MACBA</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://palaumusica.cat/en/visit-the-palau">Visita Palau</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://7portes.com/en/book-a-table-restaurant/">7 Portes</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://casalolea.com/reserva/">Casa Lolea</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="d7">
+      <div class="dayTop">
+        <div>
+          <h3>Giovedì 7 maggio – Centro storico, Born e La Pedrera</h3>
+          <p>Arrivo, Rambla, Gotico, pranzo nel Born, Casa Milà / La Pedrera, cena 7 Portes.</p>
+        </div>
+        <div class="tag">La Pedrera ore 16:30</div>
+      </div>
+      <div class="dayImg" style='background-image:linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.60)), url("https://images.unsplash.com/photo-1543785734-4b6b5f1f6b63?auto=format&fit=crop&w=1600&q=70");'></div>
+      <div class="dayBody">
+        <div class="slot">
+          <div class="slotHead"><div class="time">09:45–11:15</div><div class="where">El Prat → Hotel</div></div>
+          <div class="title">Arrivo e deposito bagagli</div>
+          <p class="desc">Taxi verso l’hotel, breve pausa e partenza a piedi per il centro.</p>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">11:30–12:15</div><div class="where">Plaça de Catalunya</div></div>
+          <div class="title">Orientamento + servizi</div>
+          <p class="desc">Sosta comoda post-viaggio. Facoltativo: El Corte Inglés.</p>
+          <div class="btnRow">
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Pla%C3%A7a%20de%20Catalunya%20Barcelona">🗺️ Plaça Catalunya</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">12:15–13:00</div><div class="where">La Rambla / Boquería</div></div>
+          <div class="title">Passeggiata + Mercato</div>
+          <p class="desc">Passaggio sulla Rambla e ingresso alla Boquería.</p>
+          <div class="btnRow">
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=La%20Rambla%20Barcelona">🗺️ Rambla</a>
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Mercat%20de%20la%20Boqueria">🗺️ Boquería</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">13:00–14:15</div><div class="where">Barri Gòtic</div></div>
+          <div class="title">Gotico + Santa Maria del Pi</div>
+          <p class="desc">Passeggiata nei vicoli storici. Chiesa gotica molto elegante.</p>
+          <div class="btnRow">
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Barri%20G%C3%B2tic%20Barcelona">🗺️ Gotico</a>
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Bas%C3%ADlica%20de%20Santa%20Maria%20del%20Pi">⛪ Santa Maria del Pi</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">14:30–15:45</div><div class="where">El Born</div></div>
+          <div class="title">Pranzo tapas nel Born</div>
+          <p class="desc">Scelta ideale: El Xampanyet oppure Bar del Pla.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=El%20Xampanyet%20Barcelona">🍽️ El Xampanyet</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Bar%20del%20Pla%20Barcelona">🍽️ Bar del Pla</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">16:30</div><div class="where">Passeig de Gràcia</div></div>
+          <div class="title">Casa Milà / La Pedrera</div>
+          <p class="desc">Ingresso fissato. Dopo la visita: passeggiata o rientro in hotel.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://www.lapedrera.com/en/tickets">🎟️ Biglietti/info</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Casa%20Mil%C3%A0%20La%20Pedrera">🗺️ Mappa</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">20:30</div><div class="where">Port Vell</div></div>
+          <div class="title">Cena: 7 Portes</div>
+          <p class="desc">Cena storica. Taxi consigliato se volete essere più comodi.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://7portes.com/en/book-a-table-restaurant/">🍽️ Prenota</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=7%20Portes%20Barcelona">🗺️ Mappa</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="d8">
+      <div class="dayTop">
+        <div>
+          <h3>Venerdì 8 maggio – Sagrada Família, Gràcia, Park Güell</h3>
+          <p>Mattina Gaudí, pranzo a Gràcia, pomeriggio a Park Güell, serata in Eixample.</p>
+        </div>
+        <div class="tag">Sagrada 10:30 · Park Güell 16:30</div>
+      </div>
+      <div class="dayImg" style='background-image:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.60)), url("https://images.unsplash.com/photo-1506074673148-4d3c1b4b64ab?auto=format&fit=crop&w=1600&q=70");'></div>
+      <div class="dayBody">
+        <div class="slot">
+          <div class="slotHead"><div class="time">09:45–10:15</div><div class="where">Hotel → Sagrada Família</div></div>
+          <div class="title">Spostamento verso la visita</div>
+          <p class="desc">Metro o taxi breve, per arrivare con un po’ di margine.</p>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">10:30</div><div class="where">Sagrada Família</div></div>
+          <div class="title">Ingresso alla basilica</div>
+          <p class="desc">Visita centrale della giornata. Considerate 60–90 minuti.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://sagradafamilia.org/tickets">🎟️ Biglietti</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Sagrada%20Fam%C3%ADlia">🗺️ Mappa</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">12:30–14:00</div><div class="where">Gràcia</div></div>
+          <div class="title">Pranzo leggero + quartiere</div>
+          <p class="desc">Bar/tapas e passaggio al Mercat de la Llibertat.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Mercat%20de%20la%20Llibertat">🗺️ Mercat de la Llibertat</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">14:00–16:00</div><div class="where">Gràcia</div></div>
+          <div class="title">Passeggiata rilassata</div>
+          <p class="desc">Tempo morbido prima del secondo ingresso già fissato.</p>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">16:30</div><div class="where">Park Güell</div></div>
+          <div class="title">Ingresso a Park Güell</div>
+          <p class="desc">Arrivate puntuali. Taxi consigliato per comodità.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://parkguell.barcelona/en/buy-tickets">🎟️ Biglietti</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Park%20G%C3%BCell">🗺️ Mappa</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">20:30</div><div class="where">Eixample / zona hotel</div></div>
+          <div class="title">Cena strutturata</div>
+          <p class="desc">Potete restare in Eixample, con soluzione semplice e pratica.</p>
+          <div class="btnRow">
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Cerveseria%20Catalana">🗺️ Cerveseria Catalana</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="d9">
+      <div class="dayTop">
+        <div>
+          <h3>Sabato 9 maggio – Palau, Raval e Museo Picasso</h3>
+          <p>Visita del Palau al mattino, pranzo e zona Raval, poi Museo Picasso nel pomeriggio.</p>
+        </div>
+        <div class="tag">Palau 10:30 · Picasso 16:30</div>
+      </div>
+      <div class="dayImg" style='background-image:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.60)), url("https://images.unsplash.com/photo-1542662565-7e4b66bae529?auto=format&fit=crop&w=1600&q=70");'></div>
+      <div class="dayBody">
+        <div class="slot">
+          <div class="slotHead"><div class="time">10:30</div><div class="where">Palau de la Música Catalana</div></div>
+          <div class="title">Visita del palazzo</div>
+          <p class="desc">Non concerto, ma visita architettonica del Palau.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://palaumusica.cat/en/visit-the-palau">🎟️ Visita Palau</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Palau%20de%20la%20M%C3%BAsica%20Catalana">🗺️ Mappa</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">12:00–13:15</div><div class="where">Centro → Raval</div></div>
+          <div class="title">Passeggiata e trasferimento morbido</div>
+          <p class="desc">Mattina più elegante e tranquilla rispetto alla versione precedente.</p>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">13:15–14:30</div><div class="where">Raval</div></div>
+          <div class="title">Pranzo leggero</div>
+          <p class="desc">Potete mantenere il pranzo al Centric Raval.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://www.centricbar.com/en/">ℹ️ Centric Raval</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Centric%20Raval">🗺️ Mappa</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">14:30–15:45</div><div class="where">Raval / Sant Antoni</div></div>
+          <div class="title">Passeggiata urbana o mercato</div>
+          <p class="desc">Tempo flessibile prima dell’ingresso al Picasso.</p>
+          <div class="btnRow">
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Mercat%20de%20Sant%20Antoni">🗺️ Mercat de Sant Antoni</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">16:30</div><div class="where">El Born</div></div>
+          <div class="title">Museo Picasso</div>
+          <p class="desc">Seconda grande visita culturale della giornata.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://museupicassobcn.cat/en/plan-your-visit/buy-tickets-and-opening-hours">🎟️ Biglietti</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Museu%20Picasso%20Barcelona">🗺️ Mappa</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">20:45</div><div class="where">Centro</div></div>
+          <div class="title">Cena: Casa Lolea</div>
+          <p class="desc">Resta perfetta come cena del sabato.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://casalolea.com/reserva/">🍷 Prenota</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Casa%20Lolea%20Barcelona">🗺️ Mappa</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="d10">
+      <div class="dayTop">
+        <div>
+          <h3>Domenica 10 maggio – Mare e rientro</h3>
+          <p>Mattina leggera, Port Vell/Barceloneta, rientro in hotel e taxi per l’aeroporto.</p>
+        </div>
+        <div class="tag">Taxi consigliato ore 16:00</div>
+      </div>
+      <div class="dayImg" style='background-image:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.62)), url("https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1600&q=70");'></div>
+      <div class="dayBody">
+        <div class="slot">
+          <div class="slotHead"><div class="time">10:30–12:30</div><div class="where">Barceloneta + Port Vell</div></div>
+          <div class="title">Passeggiata sul mare</div>
+          <p class="desc">Mattina leggera, senza stress.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Barceloneta">🗺️ Barceloneta</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/?api=1&query=Port%20Vell%20Barcelona">🗺️ Port Vell</a>
+          </div>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">12:45–14:00</div><div class="where">Centro</div></div>
+          <div class="title">Pranzo leggero</div>
+          <p class="desc">Tapas o bar comodo, senza appesantire la giornata.</p>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">14:15–15:30</div><div class="where">Hotel</div></div>
+          <div class="title">Bagagli e ultimi preparativi</div>
+          <p class="desc">Rientro in hotel, recupero bagagli, ultimi acquisti veloci.</p>
+        </div>
+
+        <div class="slot">
+          <div class="slotHead"><div class="time">16:00</div><div class="where">Hotel → El Prat</div></div>
+          <div class="title">Taxi per l’aeroporto</div>
+          <p class="desc">Partenza consigliata dall’hotel alle 16:00 per il volo delle 19:10.</p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" target="_blank" rel="noreferrer" href="https://www.taxibarcelona.cat/">📞 Prenota taxi</a>
+            <a class="btn" target="_blank" rel="noreferrer" href="https://www.google.com/maps/dir/?api=1&origin=Hotel%20Gran%20Via%20Catalunya%20Barcelona&destination=Barcelona%20El%20Prat%20Airport&travelmode=driving">🚕 Percorso</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Se non vedi l’aggiornamento subito, apri il sito con un parametro nuovo, ad esempio: <b>?v=3</b>
     </div>
   </div>
-</header>
-
-<div class="nav">
-  <div class="wrap">
-    <a class="chip" href="#base"><strong>Base & Taxi</strong></a>
-    <a class="chip" href="#d7">Giovedì 7</a>
-    <a class="chip" href="#d8">Venerdì 8</a>
-    <a class="chip" href="#d9">Sabato 9</a>
-    <a class="chip" href="#d10">Domenica 10</a>
-  </div>
-</div>
-
-<main>
-  <div class="grid wrap">
-
-    <!-- BASE -->
-    <section class="card" id="base">
-      <div class="hd">
-        <div>
-          <h2>Base & trasferimenti</h2>
-          <div class="sub">Tutto quello che serve (link rapidi, taxi, mappe)</div>
-        </div>
-      </div>
-      <div class="body">
-        <div class="block">
-          <div class="time">Hotel</div>
-          <div>
-            <div class="place">Hotel Gran Via Catalunya (zona Plaça de Catalunya)</div>
-            <div class="meta">Partiamo e rientriamo qui ogni giorno.</div>
-            <div class="actions">
-              <a class="btn primary" href="https://www.granviacatalunya.com/" target="_blank" rel="noreferrer">🌐 Sito hotel</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Hotel%20Gran%20Via%20Catalunya%20Barcelona" target="_blank" rel="noreferrer">📍 Mappa hotel</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">Arrivo</div>
-          <div>
-            <div class="place">El Prat → Hotel</div>
-            <div class="meta">Arrivo volo 7/5 ore 09:45. Taxi stimato 30–45 min (traffico variabile).</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Barcelona%20El%20Prat%20Airport&destination=Hotel%20Gran%20Via%20Catalunya%20Barcelona&travelmode=driving" target="_blank" rel="noreferrer">🧭 Percorso in auto</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">Rientro</div>
-          <div>
-            <div class="place">Hotel → El Prat (volo 19:10)</div>
-            <div class="meta"><strong>Consiglio:</strong> prenota/chiama taxi per le <strong>16:00</strong> (arrivo aeroporto ~16:40–17:00 con margine comodo).</div>
-            <div class="actions">
-              <a class="btn primary" href="https://www.taxibarcelona.cat/en/book-a-taxi/" target="_blank" rel="noreferrer">🚕 Prenota Taxi Barcelona</a>
-              <a class="btn" href="https://www.free-now.com/it/" target="_blank" rel="noreferrer">📲 FREE NOW</a>
-              <a class="btn" href="https://www.cabify.com/it/barcelona/lite" target="_blank" rel="noreferrer">📲 Cabify</a>
-              <a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Hotel%20Gran%20Via%20Catalunya%20Barcelona&destination=Barcelona%20El%20Prat%20Airport&travelmode=driving" target="_blank" rel="noreferrer">🧭 Percorso in auto</a>
-            </div>
-            <div class="hint">Tip: per non impazzire, usate sempre questi pulsanti “Percorso” e vi porta direttamente su Google Maps.</div>
-          </div>
-        </div>
-
-        <details>
-          <summary>🎟️ Link prenotazioni (biglietti e tavoli)</summary>
-          <ul class="list">
-            <li>Sagrada Família (biglietti ufficiali): <a href="https://sagradafamilia.org/tickets" target="_blank" rel="noreferrer">apri</a></li>
-            <li>Park Güell (biglietti ufficiali): <a href="https://parkguell.barcelona/en/buy-tickets" target="_blank" rel="noreferrer">apri</a></li>
-            <li>Museo Picasso (biglietti): <a href="https://museupicassobcn.cat/en/plan-your-visit/buy-tickets-and-opening-hours" target="_blank" rel="noreferrer">apri</a></li>
-            <li>MACBA (info/visita): <a href="https://www.macba.cat/en/plan-your-visit/" target="_blank" rel="noreferrer">apri</a></li>
-            <li>Palau de la Música (biglietti): <a href="https://entrades.palaumusica.cat/" target="_blank" rel="noreferrer">apri</a></li>
-            <li>Barça Tour (biglietti): <a href="https://www.fcbarcelona.com/en/tickets/camp-nou-experience" target="_blank" rel="noreferrer">apri</a></li>
-            <li>7 Portes (prenota tavolo): <a href="https://7portes.com/en/book-a-table-restaurant/" target="_blank" rel="noreferrer">apri</a></li>
-            <li>Casa Lolea (prenota): <a href="https://casalolea.com/reserva/" target="_blank" rel="noreferrer">apri</a></li>
-          </ul>
-        </details>
-      </div>
-    </section>
-
-    <!-- GIOVEDÌ 7 -->
-    <section class="card" id="d7">
-      <div class="imgwrap">
-        <img class="heroimg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Barcelona_view_from_Montju%C3%AFc.jpg/1280px-Barcelona_view_from_Montju%C3%AFc.jpg" alt="Barcellona panorama">
-        <div class="imgcap">Giovedì 7: centro storico + Born + cena 7 Portes</div>
-      </div>
-      <div class="hd">
-        <div>
-          <h2>Giovedì 7 maggio</h2>
-          <div class="sub">Arrivo, Rambla/Boquería, Gotico, Born, 7 Portes</div>
-        </div>
-      </div>
-      <div class="body">
-        <div class="block">
-          <div class="time">09:45–11:15</div>
-          <div>
-            <div class="place">El Prat → Hotel (taxi)</div>
-            <div class="meta">Deposito bagagli, refresh veloce.</div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">11:30–12:15</div>
-          <div>
-            <div class="place">Plaça de Catalunya: pausa + servizi + shopping leggero</div>
-            <div class="meta">El Corte Inglés (comodo dopo viaggio: bagni, caffè, acquisti rapidi).</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=El+Corte+Ingl%C3%A9s+Pla%C3%A7a+de+Catalunya" target="_blank" rel="noreferrer">📍 Mappa El Corte Inglés</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">12:15–13:00</div>
-          <div>
-            <div class="place">La Rambla + Mercat de la Boquería</div>
-            <div class="meta">Passeggiata “di passaggio”. Snack ok, evitare ristoranti turistici lungo Rambla.</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=La%20Rambla%20Barcelona" target="_blank" rel="noreferrer">📍 Mappa Rambla</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Mercat%20de%20la%20Boqueria" target="_blank" rel="noreferrer">📍 Mappa Boquería</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">13:00–14:30</div>
-          <div>
-            <div class="place">Barri Gòtic + Santa Maria del Pi</div>
-            <div class="meta">Vicoli e piazze. Chiesa spesso più tranquilla della Cattedrale.</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Barri%20G%C3%B2tic%20Barcelona" target="_blank" rel="noreferrer">📍 Mappa Gotico</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Bas%C3%ADlica%20de%20Santa%20Maria%20del%20Pi" target="_blank" rel="noreferrer">📍 Santa Maria del Pi</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">14:30–16:00</div>
-          <div>
-            <div class="place">Pranzo tapas nel Born</div>
-            <div class="meta">Tapas + cava: El Xampanyet / Bar del Pla.</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=El%20Xampanyet%20Barcelona" target="_blank" rel="noreferrer">📍 El Xampanyet</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Bar%20del%20Pla%20Barcelona" target="_blank" rel="noreferrer">📍 Bar del Pla</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">16:15–17:30</div>
-          <div>
-            <div class="place">Museo Picasso</div>
-            <div class="meta">Prenotazione consigliata per evitare code.</div>
-            <div class="actions">
-              <a class="btn primary" href="https://museupicassobcn.cat/en/plan-your-visit/buy-tickets-and-opening-hours" target="_blank" rel="noreferrer">🎟️ Biglietti</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Museu%20Picasso%20Barcelona" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">17:30–18:15</div>
-          <div>
-            <div class="place">Santa Maria del Mar (Born)</div>
-            <div class="meta">Capolavoro del gotico catalano, atmosfera intensa.</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Bas%C3%ADlica%20de%20Santa%20Maria%20del%20Mar" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">20:30</div>
-          <div>
-            <div class="place">Cena: 7 Portes</div>
-            <div class="meta">Ristorante storico. Prenotazione consigliata.</div>
-            <div class="actions">
-              <a class="btn primary" href="https://7portes.com/en/book-a-table-restaurant/" target="_blank" rel="noreferrer">🍽️ Prenota</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=7%20Portes%20Barcelona" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- VENERDÌ 8 -->
-    <section class="card" id="d8">
-      <div class="imgwrap">
-        <img class="heroimg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Sagrada_Familia_01.jpg/1280px-Sagrada_Familia_01.jpg" alt="Sagrada Família">
-        <div class="imgcap">Venerdì 8: Gaudí + Gràcia + shopping o calcio</div>
-      </div>
-      <div class="hd">
-        <div>
-          <h2>Venerdì 8 maggio</h2>
-          <div class="sub">Passeig de Gràcia, Sagrada Família, Gràcia, Park Güell + biforcazione</div>
-        </div>
-      </div>
-      <div class="body">
-
-        <div class="block">
-          <div class="time">09:30–10:30</div>
-          <div>
-            <div class="place">Passeig de Gràcia (a piedi): esterni Casa Batlló & Casa Milà</div>
-            <div class="meta">Passeggiata modernista (senza entrare, se volete tenere tempi snelli).</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Casa%20Batll%C3%B3" target="_blank" rel="noreferrer">📍 Casa Batlló</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Casa%20Mil%C3%A0%20La%20Pedrera" target="_blank" rel="noreferrer">📍 Casa Milà</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">11:00–12:30</div>
-          <div>
-            <div class="place">Sagrada Família (metro)</div>
-            <div class="meta">Biglietto a fascia oraria. Consiglio: prenotare in anticipo.</div>
-            <div class="actions">
-              <a class="btn primary" href="https://sagradafamilia.org/tickets" target="_blank" rel="noreferrer">🎟️ Biglietti ufficiali</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Sagrada%20Fam%C3%ADlia" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">13:00–14:30</div>
-          <div>
-            <div class="place">Gràcia: pranzo bar/tapas + Mercat de la Llibertat</div>
-            <div class="meta">Quartiere molto “locale”.</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Mercat%20de%20la%20Llibertat" target="_blank" rel="noreferrer">📍 Mercat de la Llibertat</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">15:00–16:15</div>
-          <div>
-            <div class="place">Park Güell</div>
-            <div class="meta">Ingresso a orario. Taxi consigliato per comodità (salite).</div>
-            <div class="actions">
-              <a class="btn primary" href="https://parkguell.barcelona/en/buy-tickets" target="_blank" rel="noreferrer">🎟️ Biglietti ufficiali</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Park%20G%C3%BCell" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">16:00–18:30</div>
-          <div>
-            <div class="place">Scelta: Shopping oppure Calcio (2–2h30)</div>
-            <div class="meta">Dividete il gruppo e ricongiungimento per cena.</div>
-
-            <details>
-              <summary>🛍️ Opzione A – Shopping (L’Illa Diagonal)</summary>
-              <div class="actions" style="margin-top:10px">
-                <a class="btn" href="https://www.google.com/maps/search/?api=1&query=L%E2%80%99Illa%20Diagonal" target="_blank" rel="noreferrer">📍 Mappa L’Illa</a>
-                <a class="btn" href="https://lilla.com/en/opening-hours/" target="_blank" rel="noreferrer">🕒 Orari</a>
-              </div>
-              <div class="hint">Centro commerciale elegante e cittadino (1–2 ore).</div>
-            </details>
-
-            <details>
-              <summary>⚽ Opzione B – Calcio (Barça Tour + Sarrià)</summary>
-              <div class="actions" style="margin-top:10px">
-                <a class="btn primary" href="https://www.fcbarcelona.com/en/tickets/camp-nou-experience" target="_blank" rel="noreferrer">🎟️ Biglietti Barça Tour</a>
-                <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Spotify%20Camp%20Nou" target="_blank" rel="noreferrer">📍 Mappa Camp Nou</a>
-                <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Jardins%20del%20Camp%20de%20l%E2%80%99Espanyol%20Barcelona" target="_blank" rel="noreferrer">📍 Area Sarrià</a>
-              </div>
-              <div class="hint">Sosta “memoria” Italia–Brasile 3–2 (1982): foto e ricordo in zona Sarrià.</div>
-            </details>
-
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">20:30</div>
-          <div>
-            <div class="place">Cena (zona Eixample / hotel)</div>
-            <div class="meta">Suggerimento: Cerveseria Catalana (andare presto) o alternativa vicino all’hotel.</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Cerveseria%20Catalana%20Barcelona" target="_blank" rel="noreferrer">📍 Mappa Cerveseria Catalana</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SABATO 9 -->
-    <section class="card" id="d9">
-      <div class="imgwrap">
-        <img class="heroimg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Palau_de_la_M%C3%BAsica_Catalana_-_Barcelona.jpg/1280px-Palau_de_la_M%C3%BAsica_Catalana_-_Barcelona.jpg" alt="Palau de la Música Catalana">
-        <div class="imgcap">Sabato 9: Raval, mercati, Palau 18:30, Casa Lolea</div>
-      </div>
-      <div class="hd">
-        <div>
-          <h2>Sabato 9 maggio</h2>
-          <div class="sub">MACBA, Sant Pau del Camp, Centric Raval, Sant Antoni, Palau 18:30, Casa Lolea</div>
-        </div>
-      </div>
-      <div class="body">
-        <div class="block">
-          <div class="time">10:30–12:00</div>
-          <div>
-            <div class="place">MACBA + passeggiata urbana nel Raval</div>
-            <div class="meta">Interessante anche solo architettura e piazza.</div>
-            <div class="actions">
-              <a class="btn primary" href="https://www.macba.cat/en/plan-your-visit/" target="_blank" rel="noreferrer">🎟️ Info/Biglietti</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=MACBA%20Barcelona" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">12:10–12:40</div>
-          <div>
-            <div class="place">Chiesa romanica: Sant Pau del Camp</div>
-            <div class="meta">Piccola, silenziosa, una sorpresa nel Raval.</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Sant%20Pau%20del%20Camp" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">13:30–15:00</div>
-          <div>
-            <div class="place">Pranzo: Centric Raval</div>
-            <div class="meta">Comodo, centrale. Pranzo leggero.</div>
-            <div class="actions">
-              <a class="btn" href="https://www.centricbar.com/en/" target="_blank" rel="noreferrer">ℹ️ Sito/Info</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Centric%20Raval%20Barcelona" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">15:30–16:30</div>
-          <div>
-            <div class="place">Mercat de Sant Antoni</div>
-            <div class="meta">Mercato modernista, molto locale.</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Mercat%20de%20Sant%20Antoni" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">17:45–20:00</div>
-          <div>
-            <div class="place">Palau de la Música (concerto 18:30)</div>
-            <div class="meta">Arrivare 30–45 min prima per ingresso e per godersi l’edificio.</div>
-            <div class="actions">
-              <a class="btn primary" href="https://entrades.palaumusica.cat/" target="_blank" rel="noreferrer">🎟️ Biglietti Palau</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Palau%20de%20la%20M%C3%BAsica%20Catalana" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">20:45</div>
-          <div>
-            <div class="place">Cena: Casa Lolea</div>
-            <div class="meta">Cena conviviale (prenotazione consigliata).</div>
-            <div class="actions">
-              <a class="btn primary" href="https://casalolea.com/reserva/" target="_blank" rel="noreferrer">🍽️ Prenota</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Casa%20Lolea%20Barcelona" target="_blank" rel="noreferrer">📍 Mappa</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- DOMENICA 10 -->
-    <section class="card" id="d10">
-      <div class="imgwrap">
-        <img class="heroimg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Barcelona_Barceloneta_beach.jpg/1280px-Barcelona_Barceloneta_beach.jpg" alt="Barceloneta">
-        <div class="imgcap">Domenica 10: mare + rientro (taxi 16:00)</div>
-      </div>
-      <div class="hd">
-        <div>
-          <h2>Domenica 10 maggio</h2>
-          <div class="sub">Barceloneta, Port Vell, margine bagagli, taxi per aeroporto</div>
-        </div>
-      </div>
-      <div class="body">
-        <div class="block">
-          <div class="time">10:30–12:30</div>
-          <div>
-            <div class="place">Passeggiata mare: Barceloneta + Port Vell</div>
-            <div class="meta">Evitate i ristoranti troppo turistici in prima linea.</div>
-            <div class="actions">
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Barceloneta" target="_blank" rel="noreferrer">📍 Barceloneta</a>
-              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Port%20Vell%20Barcelona" target="_blank" rel="noreferrer">📍 Port Vell</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">12:45–14:00</div>
-          <div>
-            <div class="place">Pranzo leggero (tapas)</div>
-            <div class="meta">Tenere margine per rientro, bagagli e trasferimento.</div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">14:30–15:30</div>
-          <div>
-            <div class="place">Hotel: bagagli + ultimi acquisti</div>
-            <div class="meta">Check-out / deposito bagagli se serve.</div>
-          </div>
-        </div>
-
-        <div class="block">
-          <div class="time">16:00</div>
-          <div>
-            <div class="place">Taxi Hotel → Aeroporto (El Prat)</div>
-            <div class="meta">Orario consigliato per volo 19:10.</div>
-            <div class="actions">
-              <a class="btn primary" href="https://www.taxibarcelona.cat/en/book-a-taxi/" target="_blank" rel="noreferrer">🚕 Prenota taxi</a>
-              <a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Hotel%20Gran%20Via%20Catalunya%20Barcelona&destination=Barcelona%20El%20Prat%20Airport&travelmode=driving" target="_blank" rel="noreferrer">🧭 Percorso</a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-  </div>
-</main>
-
-<footer>
-  Sito statico per il gruppo · Stessa grafica su PC e telefono · Link rapidi a Mappe e Prenotazioni
-</footer>
-
 </body>
 </html>
