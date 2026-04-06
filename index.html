@@ -7,115 +7,170 @@
   <meta name="description" content="Itinerario 7–10 maggio – Base: Hotel Gran Via Catalunya. Link rapidi a mappe, biglietti e taxi." />
   <style>
     :root{
-      --bg:#0b1220;
-      --card:#0f1a33;
-      --text:#eaf0ff;
-      --muted:rgba(234,240,255,.74);
-      --line:rgba(255,255,255,.10);
+      --bg1:#0b1220;
+      --bg2:#13213d;
+      --bg3:#1d3557;
+      --card:rgba(255,255,255,.08);
+      --card-strong:rgba(255,255,255,.12);
+      --line:rgba(255,255,255,.12);
+      --text:#eef4ff;
+      --muted:rgba(238,244,255,.75);
       --accent:#7dd3fc;
       --accent2:#a78bfa;
-      --shadow:0 16px 50px rgba(0,0,0,.35);
-      --radius:20px;
+      --accent3:#34d399;
+      --shadow:0 18px 60px rgba(0,0,0,.35);
+      --radius:22px;
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
+
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
       background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(125,211,252,.25), transparent 60%),
-        radial-gradient(1200px 700px at 90% 10%, rgba(167,139,250,.22), transparent 55%),
-        var(--bg);
+        radial-gradient(1000px 700px at 10% 0%, rgba(125,211,252,.18), transparent 60%),
+        radial-gradient(900px 700px at 100% 10%, rgba(167,139,250,.16), transparent 55%),
+        radial-gradient(900px 700px at 50% 100%, rgba(52,211,153,.10), transparent 60%),
+        linear-gradient(160deg, var(--bg1), var(--bg2) 45%, var(--bg3));
+      min-height:100vh;
     }
+
     a{color:inherit}
-    .wrap{max-width:1100px;margin:0 auto;padding:18px 14px 60px}
+
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:20px 14px 64px;
+    }
+
     .hero{
       border:1px solid var(--line);
-      border-radius:28px;
+      border-radius:32px;
       overflow:hidden;
-      background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
       box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
     }
+
     .heroTop{
-      padding:20px 18px 16px;
+      padding:24px 20px 18px;
       display:flex;
       flex-wrap:wrap;
-      gap:14px;
+      gap:16px;
       align-items:flex-start;
     }
+
     .badge{
       display:inline-flex;
       align-items:center;
       gap:8px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
+      background:rgba(255,255,255,.07);
       padding:8px 12px;
       border-radius:999px;
       font-size:12px;
       color:var(--muted);
     }
-    h1{margin:4px 0 8px;font-size:28px;letter-spacing:-.02em}
-    .sub{color:var(--muted);font-size:14px;line-height:1.4}
-    .pillRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+
+    h1{
+      margin:6px 0 10px;
+      font-size:30px;
+      letter-spacing:-.03em;
+    }
+
+    .sub{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.45;
+    }
+
+    .pillRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
     .pill{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:10px 12px;
+      padding:10px 13px;
       border-radius:999px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
+      background:rgba(255,255,255,.07);
       font-size:13px;
       color:var(--text);
       text-decoration:none;
       white-space:nowrap;
+      transition:.18s ease;
     }
-    .pill:hover{background:rgba(255,255,255,.1)}
-    .heroImg{
-      height:180px;
+
+    .pill:hover{
+      background:rgba(255,255,255,.12);
+      transform:translateY(-1px);
+    }
+
+    .heroGlow{
+      height:120px;
       background:
-        linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,.55)),
-        url("https://unsplash.com/it/foto/veduta-aerea-degli-edifici-della-citta-durante-il-giorno-hVhfqhDYciU");
-      background-size:cover;
-      background-position:center;
+        linear-gradient(90deg, rgba(125,211,252,.20), rgba(167,139,250,.18), rgba(52,211,153,.14)),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.00));
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
     }
+
     .nav{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       padding:12px 14px;
-      border-top:1px solid var(--line);
-      background:rgba(0,0,0,.12);
+      background:rgba(0,0,0,.10);
     }
+
     .nav a{
       text-decoration:none;
       border:1px solid var(--line);
       background:rgba(255,255,255,.06);
-      padding:9px 11px;
+      padding:9px 12px;
       border-radius:999px;
       font-size:13px;
       color:var(--text);
+      transition:.18s ease;
     }
+
+    .nav a:hover{
+      background:rgba(255,255,255,.12);
+    }
+
     .grid{
       display:grid;
       grid-template-columns:1.15fr .85fr;
       gap:16px;
       margin-top:16px;
     }
+
     @media (max-width: 920px){
       .grid{grid-template-columns:1fr}
+      h1{font-size:26px}
     }
+
     .card{
       border:1px solid var(--line);
       border-radius:var(--radius);
-      background:rgba(255,255,255,.06);
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      background:var(--card);
+      box-shadow:0 12px 30px rgba(0,0,0,.20);
       overflow:hidden;
+      backdrop-filter: blur(10px);
     }
+
     .cardHeader{
       padding:14px 16px;
-      background:linear-gradient(135deg, rgba(125,211,252,.16), rgba(167,139,250,.10));
+      background:
+        linear-gradient(135deg, rgba(125,211,252,.14), rgba(167,139,250,.10));
       border-bottom:1px solid var(--line);
       display:flex;
       justify-content:space-between;
@@ -123,17 +178,26 @@
       gap:10px;
       flex-wrap:wrap;
     }
-    .cardHeader h2{margin:0;font-size:18px}
+
+    .cardHeader h2{
+      margin:0;
+      font-size:18px;
+    }
+
     .tag{
       padding:8px 10px;
       border-radius:999px;
       font-size:12px;
       border:1px solid var(--line);
-      background:rgba(0,0,0,.18);
+      background:rgba(255,255,255,.06);
       color:var(--muted);
       white-space:nowrap;
     }
-    .section{padding:16px}
+
+    .section{
+      padding:16px;
+    }
+
     .infoList{
       margin:0;
       padding:0;
@@ -141,15 +205,34 @@
       display:grid;
       gap:10px;
     }
+
     .infoItem{
       border:1px solid var(--line);
       border-radius:16px;
       background:rgba(255,255,255,.05);
       padding:12px;
     }
-    .infoItem strong{display:block;font-size:13px;margin-bottom:4px}
-    .infoItem span{display:block;color:var(--muted);font-size:13px;line-height:1.35}
-    .btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+
+    .infoItem strong{
+      display:block;
+      font-size:13px;
+      margin-bottom:4px;
+    }
+
+    .infoItem span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .btnRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
     .btn{
       display:inline-flex;
       align-items:center;
@@ -162,45 +245,74 @@
       text-decoration:none;
       font-size:13px;
       color:var(--text);
+      transition:.18s ease;
     }
-    .btn:hover{background:rgba(255,255,255,.12)}
+
+    .btn:hover{
+      background:rgba(255,255,255,.13);
+      transform:translateY(-1px);
+    }
+
     .btnPrimary{
-      background:linear-gradient(135deg, rgba(125,211,252,.25), rgba(167,139,250,.18));
+      background:
+        linear-gradient(135deg, rgba(125,211,252,.22), rgba(167,139,250,.18));
       border-color:rgba(125,211,252,.35);
     }
+
     .day{
       margin-top:16px;
       border:1px solid var(--line);
       border-radius:28px;
       overflow:hidden;
-      background:rgba(255,255,255,.05);
+      background:var(--card);
       box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
     }
+
     .dayTop{
-      padding:16px;
+      padding:18px 16px;
       border-bottom:1px solid var(--line);
-      background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
       display:flex;
       justify-content:space-between;
       align-items:flex-start;
       gap:12px;
       flex-wrap:wrap;
     }
-    .dayTop h3{margin:0;font-size:20px;letter-spacing:-.01em}
-    .dayTop p{margin:6px 0 0;color:var(--muted);font-size:13px}
-    .dayImg{
-      height:150px;
-      background-size:cover;
-      background-position:center;
+
+    .dayTop h3{
+      margin:0;
+      font-size:21px;
+      letter-spacing:-.01em;
+    }
+
+    .dayTop p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .dayStripe{
+      height:10px;
+      background:
+        linear-gradient(90deg, rgba(125,211,252,.70), rgba(167,139,250,.55), rgba(52,211,153,.55));
       border-bottom:1px solid var(--line);
     }
-    .dayBody{padding:14px 14px 16px;display:grid;gap:12px}
+
+    .dayBody{
+      padding:14px 14px 16px;
+      display:grid;
+      gap:12px;
+    }
+
     .slot{
       border:1px solid var(--line);
       background:rgba(255,255,255,.05);
       border-radius:18px;
       padding:12px;
     }
+
     .slotHead{
       display:flex;
       align-items:flex-start;
@@ -208,6 +320,7 @@
       gap:10px;
       flex-wrap:wrap;
     }
+
     .time{
       display:inline-flex;
       align-items:center;
@@ -216,23 +329,40 @@
       font-size:13px;
       padding:8px 10px;
       border-radius:999px;
-      background:rgba(0,0,0,.18);
+      background:rgba(255,255,255,.07);
       border:1px solid var(--line);
       white-space:nowrap;
     }
-    .where{color:var(--muted);font-size:13px}
-    .title{margin:10px 0 6px;font-weight:800;font-size:15px}
-    .desc{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+
+    .where{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .title{
+      margin:10px 0 6px;
+      font-weight:800;
+      font-size:15px;
+    }
+
+    .desc{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
     .note{
       margin-top:14px;
-      color:rgba(234,240,255,.75);
+      color:rgba(238,244,255,.74);
       font-size:12px;
       text-align:center;
     }
+
     .footer{
       margin-top:18px;
       text-align:center;
-      color:rgba(234,240,255,.55);
+      color:rgba(238,244,255,.55);
       font-size:12px;
     }
   </style>
@@ -257,7 +387,9 @@
           </div>
         </div>
       </div>
-      <div class="heroImg" aria-label="Panorama Barcellona"></div>
+
+      <div class="heroGlow"></div>
+
       <div class="nav">
         <a href="#base">Base & Taxi</a>
         <a href="#d7">7 maggio</a>
@@ -332,7 +464,7 @@
         </div>
         <div class="tag">La Pedrera ore 16:30</div>
       </div>
-      <div class="dayImg" style='background-image:linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.60)), url("https://images.unsplash.com/photo-1543785734-4b6b5f1f6b63?auto=format&fit=crop&w=1600&q=70");'></div>
+      <div class="dayStripe"></div>
       <div class="dayBody">
         <div class="slot">
           <div class="slotHead"><div class="time">09:45–11:15</div><div class="where">El Prat → Hotel</div></div>
@@ -409,7 +541,7 @@
         </div>
         <div class="tag">Sagrada 10:30 · Park Güell 16:30</div>
       </div>
-      <div class="dayImg" style='background-image:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.60)), url("https://images.unsplash.com/photo-1506074673148-4d3c1b4b64ab?auto=format&fit=crop&w=1600&q=70");'></div>
+      <div class="dayStripe"></div>
       <div class="dayBody">
         <div class="slot">
           <div class="slotHead"><div class="time">09:45–10:15</div><div class="where">Hotel → Sagrada Família</div></div>
@@ -471,7 +603,7 @@
         </div>
         <div class="tag">Palau 10:30 · Picasso 16:30</div>
       </div>
-      <div class="dayImg" style='background-image:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.60)), url("https://images.unsplash.com/photo-1542662565-7e4b66bae529?auto=format&fit=crop&w=1600&q=70");'></div>
+      <div class="dayStripe"></div>
       <div class="dayBody">
         <div class="slot">
           <div class="slotHead"><div class="time">10:30</div><div class="where">Palau de la Música Catalana</div></div>
@@ -538,7 +670,7 @@
         </div>
         <div class="tag">Taxi consigliato ore 16:00</div>
       </div>
-      <div class="dayImg" style='background-image:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.62)), url("https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1600&q=70");'></div>
+      <div class="dayStripe"></div>
       <div class="dayBody">
         <div class="slot">
           <div class="slotHead"><div class="time">10:30–12:30</div><div class="where">Barceloneta + Port Vell</div></div>
@@ -575,7 +707,7 @@
     </div>
 
     <div class="footer">
-      Se non vedi l’aggiornamento subito, apri il sito con un parametro nuovo, ad esempio: <b>?v=3</b>
+      Se non vedi subito l’aggiornamento, apri il sito con un parametro nuovo, ad esempio: <b>?v=4</b>
     </div>
   </div>
 </body>
